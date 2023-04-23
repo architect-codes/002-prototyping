@@ -1,0 +1,10 @@
+<Project>
+ <PropertyGroup>
+   <LangVersion>latest</LangVersion>
+ </PropertyGroup>
+ 
+ <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+</PropertyGroup>
+
+</Project>
