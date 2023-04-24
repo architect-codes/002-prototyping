@@ -47,17 +47,17 @@ namespace prototyping.tests
 
     #region notification
 
-    public class BusinessEvent: INotification
+    internal class BusinessEvent: INotification
     {
         public Guid Id { get; set; }
     }
 
-    public class NotifyOfSomething : BusinessEvent
+    internal class NotifyOfSomething : BusinessEvent
     {
         public required string EventName { get; set; }
     }
 
-    public class NofificationHandler1 : INotificationHandler<NotifyOfSomething>
+    internal class NofificationHandler1 : INotificationHandler<NotifyOfSomething>
     {
         readonly IDummyService _dummyService;
 
@@ -73,13 +73,23 @@ namespace prototyping.tests
         }
     }
 
-    public class NofificationHandler2 : INotificationHandler<NotifyOfSomething>
+    internal class NofificationHandler2 : INotificationHandler<NotifyOfSomething>
     {
         public async Task Handle(NotifyOfSomething notification, CancellationToken cancellationToken)
         {
             Debug.WriteLine("Handler 2");
             await Task.CompletedTask;
         }
+    }
+
+    internal class GeneralNotificationHandler: INotificationHandler<BusinessEvent>
+    {
+        public async Task Handle(BusinessEvent notification, CancellationToken cancellationToken)
+        {
+            Debug.WriteLine("business event");
+            await Task.CompletedTask;
+        }
+
     }
     #endregion
 }
