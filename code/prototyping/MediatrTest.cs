@@ -68,10 +68,8 @@ namespace prototyping.tests
 
         public async Task Handle(NotifyOfSomething notification, CancellationToken cancellationToken)
         {
+            Debug.WriteLine("Handler 1");
             await _dummyService.DoSomething();
-
-            Debug.WriteLine("Pong 1");
-            await Task.CompletedTask;
         }
     }
 
@@ -79,7 +77,7 @@ namespace prototyping.tests
     {
         public async Task Handle(NotifyOfSomething notification, CancellationToken cancellationToken)
         {
-            Debug.WriteLine("Pong 2");
+            Debug.WriteLine("Handler 2");
             await Task.CompletedTask;
         }
     }
