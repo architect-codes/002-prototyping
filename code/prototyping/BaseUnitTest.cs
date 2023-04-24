@@ -7,7 +7,7 @@ namespace prototyping.tests
     /// </summary>
     public class BaseUnitTest
     {
-        internal IServiceProvider GetServices()
+        internal static IServiceProvider GetServices()
         {
             var services = new ServiceCollection();
 
@@ -16,6 +16,8 @@ namespace prototyping.tests
                 {
                     conf.RegisterServicesFromAssemblyContaining(typeof(BaseUnitTest));
                 });
+
+            services.AddScoped<IDummyService, DummyService>();
 
             return services.BuildServiceProvider();
         }

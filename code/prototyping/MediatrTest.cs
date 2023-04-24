@@ -27,11 +27,9 @@ namespace prototyping.tests
         [TestMethod]
         public async Task NotifyTest()
         {
-            var srvc = GetServices();
+            var med = GetServices().GetRequiredService<IMediator>();
 
-            var med = srvc.GetRequiredService<IMediator>();
-
-            await med.Publish(new Ping_Notify() { EventName = "some event" } );
+            await med.Publish(new NotifyOfSomething() { EventName = "some notification" } );
         }
     }
 
@@ -48,23 +46,38 @@ namespace prototyping.tests
     #endregion
 
     #region notification
-    public class Ping_Notify : INotification 
+
+    public class BusinessEvent: INotification
+    {
+        public Guid Id { get; set; }
+    }
+
+    public class NotifyOfSomething : BusinessEvent
     {
         public required string EventName { get; set; }
     }
 
-    public class NofificationHandler1 : INotificationHandler<Ping_Notify>
+    public class NofificationHandler1 : INotificationHandler<NotifyOfSomething>
     {
-        public async Task Handle(Ping_Notify notification, CancellationToken cancellationToken)
+        readonly IDummyService _dummyService;
+
+        public NofificationHandler1(IDummyService dummyService)
         {
+            _dummyService = dummyService;
+        }
+
+        public async Task Handle(NotifyOfSomething notification, CancellationToken cancellationToken)
+        {
+            await _dummyService.DoSomething();
+
             Debug.WriteLine("Pong 1");
             await Task.CompletedTask;
         }
     }
 
-    public class NofificationHandler2 : INotificationHandler<Ping_Notify>
+    public class NofificationHandler2 : INotificationHandler<NotifyOfSomething>
     {
-        public async Task Handle(Ping_Notify notification, CancellationToken cancellationToken)
+        public async Task Handle(NotifyOfSomething notification, CancellationToken cancellationToken)
         {
             Debug.WriteLine("Pong 2");
             await Task.CompletedTask;
